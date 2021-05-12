@@ -14,6 +14,11 @@ namespace SpriteKind {
     export const NPC = SpriteKind.create()
     export const BodyKey = SpriteKind.create()
 }
+/**
+ * mind/body/soul fears as game progresses
+ * 
+ * "you are afraid of drowning"
+ */
 function setLevel () {
     levelOn()
     game.setDialogTextColor(15)
