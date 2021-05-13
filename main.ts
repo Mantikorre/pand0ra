@@ -18,6 +18,10 @@ namespace SpriteKind {
  * mind/body/soul fears as game progresses
  * 
  * "you are afraid of drowning"
+ * 
+ * "y
+ * 
+ * ou are afr aid."
  */
 function setLevel () {
     levelOn()
@@ -76,14 +80,14 @@ function setLevel () {
     for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
-    timer.after(2000, function () {
-        game.showLongText("YOU ARE AFRAID OF FALLING.", DialogLayout.Bottom)
-    })
     tiles.placeOnRandomTile(mindKey, assets.tile`myTile1`)
     for (let value of tiles.getTilesByType(assets.tile`myTile1`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(bench, assets.tile`myTile2`)
+    for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
+        tiles.setTileAt(value, assets.tile`transparency16`)
+    }
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
@@ -337,6 +341,10 @@ function levelOn () {
             6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
             `)
         tiles.setTilemap(tilemap`level4`)
+        tommyDisk()
+        timer.after(6000, function () {
+            game.showLongText("ARE YOU SURE YOU'RE SUPPOSED TO BE HERE? ", DialogLayout.Bottom)
+        })
     }
 }
 /**
@@ -392,6 +400,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSpri
     game.showLongText("I'M NOT EVEN REAL.", DialogLayout.Bottom)
     bench.destroy(effects.disintegrate, 500)
 })
+/**
+ */
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (pandora.vy == 0) {
         pandora.vy = -150
