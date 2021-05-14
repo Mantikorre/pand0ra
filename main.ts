@@ -23,6 +23,8 @@ namespace SpriteKind {
  * 
  * ou are afr aid."
  */
+/**
+ */
 function setLevel () {
     levelOn()
     game.setDialogTextColor(15)
@@ -89,6 +91,10 @@ function setLevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
+        tiles.setTileAt(value, assets.tile`transparency16`)
+    }
+    tiles.placeOnRandomTile(body, assets.tile`myTile7`)
+    for (let value of tiles.getTilesByType(assets.tile`myTile7`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
 }
@@ -341,10 +347,10 @@ function levelOn () {
             6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
             `)
         tiles.setTilemap(tilemap`level4`)
+        hands.destroy()
+        info.setLife(3)
         tommyDisk()
-        timer.after(6000, function () {
-            game.showLongText("ARE YOU SURE YOU'RE SUPPOSED TO BE HERE? ", DialogLayout.Bottom)
-        })
+        setFear()
     }
 }
 /**
@@ -400,8 +406,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSpri
     game.showLongText("I'M NOT EVEN REAL.", DialogLayout.Bottom)
     bench.destroy(effects.disintegrate, 500)
 })
-/**
- */
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (pandora.vy == 0) {
         pandora.vy = -150
@@ -414,6 +418,9 @@ function setVariables () {
     mindKey = sprites.create(assets.image`Mind Key`, SpriteKind.Key)
     pandora = sprites.create(assets.image`Protag`, SpriteKind.Player)
     bench = sprites.create(assets.image`I t runs ie`, SpriteKind.NPC)
+    body = sprites.create(assets.image`Body Key`, SpriteKind.BodyKey)
+    canSpawn = false
+    info.setLife(3)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles12, function (sprite, location) {
     pandora.destroy(effects.disintegrate, 500)
@@ -442,6 +449,30 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Key, function (sprite, otherSpri
         game.showLongText("it blinks.", DialogLayout.Bottom)
     }
 })
+function setFear () {
+    if (currentLevel == 0) {
+        timer.after(2000, function () {
+            game.showLongText("YOU ARE AFRAID OF FALLING.", DialogLayout.Bottom)
+        })
+    } else {
+        timer.after(2000, function () {
+            game.showLongText("YOU ARE AFRAID OF DROWNING.", DialogLayout.Bottom)
+        })
+    }
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.BodyKey, function (sprite, otherSprite) {
+    info.changeScoreBy(1)
+    body.destroy()
+    if (info.score() == 2) {
+        game.showLongText("You found the B0DY key.", DialogLayout.Bottom)
+        game.showLongText("When you hold it,", DialogLayout.Bottom)
+        game.showLongText("you can feel an eerie warmth. ", DialogLayout.Bottom)
+    } else {
+        game.setDialogTextColor(2)
+        game.showLongText("WHAT DID Y0U F0RGET?", DialogLayout.Bottom)
+        game.setDialogTextColor(15)
+    }
+})
 function mindWandering () {
     if (pandora.vx != 0) {
         info.startCountdown(15)
@@ -453,6 +484,10 @@ function mindWandering () {
         game.over(false, effects.dissolve)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardWater, function (sprite, location) {
+    pandora.destroy(effects.disintegrate, 500)
+    game.over(false, effects.melt)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     disk.destroy()
     diskCollected = true
@@ -1683,6 +1718,12 @@ function otherAnimations () {
         .......88888888888888...........
         `)
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    hands.destroy()
+    if (pandora.y >= hands.y) {
+        info.changeLifeBy(-1)
+    }
+})
 let benchTail: animation.Animation = null
 let fallOther: animation.Animation = null
 let jumpRight: animation.Animation = null
@@ -1698,9 +1739,12 @@ let wanderedFar = false
 let wasRight = false
 let wasLeft = false
 let answer = ""
+let hands: Sprite = null
+let body: Sprite = null
 let mindKey: Sprite = null
 let bench: Sprite = null
 let pandora: Sprite = null
+let canSpawn = false
 let currentLevel = 0
 currentLevel = 0
 game.setDialogFrame(img`
@@ -1774,6 +1818,10 @@ game.setDialogCursor(img`
 game.showLongText("The following game contains depictions of surrealism, derealization and similar heavy themes. Player discretion is advised.", DialogLayout.Full)
 setVariables()
 setLevel()
+setFear()
+timer.after(3000, function () {
+    canSpawn = true
+})
 game.onUpdate(function () {
     let lastDir = false
     if (pandora.vx > 0 && pandora.vy == 0) {
@@ -1798,4 +1846,39 @@ game.onUpdate(function () {
         animation.setAction(pandora, ActionKind.idlingRight)
     }
     mindWandering()
+})
+/**
+ * not sure if i like spawning rate just yet
+ */
+game.onUpdateInterval(8000, function () {
+    if (Math.percentChance(45) && canSpawn == true) {
+        hands = sprites.create(img`
+            ........................
+            ........................
+            ........................
+            ........................
+            ........................
+            ..........ffff..........
+            ........ff1111ff........
+            .......fb111111bf.......
+            .....fffc1111111f.......
+            ...fc111cd1111111f......
+            ...f1b1b1b1111dddf......
+            ...fbfbffcf11fcddf......
+            ......fcf111111bbf......
+            .......ccbdb1b1fcf......
+            .......fffbfbfdff.......
+            ........ffffffff........
+            ........fffffffffff.....
+            .........fffffc111cf....
+            .........fffff1b1b1f....
+            ..........ffffbfbfbf....
+            ...........ffff.........
+            ........................
+            ........................
+            ........................
+            `, SpriteKind.Enemy)
+        hands.setPosition(pandora.x / 80, pandora.y - 80)
+        hands.follow(pandora, 80)
+    }
 })
