@@ -101,9 +101,6 @@ function setLevel () {
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
-    for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
-    }
     tiles.placeOnRandomTile(body, assets.tile`myTile7`)
     for (let value of tiles.getTilesByType(assets.tile`myTile7`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
