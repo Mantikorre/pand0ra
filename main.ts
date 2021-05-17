@@ -2025,8 +2025,10 @@ function setFear () {
         })
     } else {
         timer.after(1000, function () {
+            game.setDialogTextColor(2)
             game.showLongText("Y, OU", DialogLayout.Bottom)
             game.showLongText("AR E  A FRAID. ", DialogLayout.Bottom)
+            game.setDialogTextColor(15)
         })
     }
 }
@@ -2041,9 +2043,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleBlueCrystal, f
         setLevel()
     } else if (secAnswer == "no" || (secAnswer == "2" || secAnswer == "n")) {
         game.showLongText("YOU ARE AFRAID OF WATER.", DialogLayout.Bottom)
-        game.showLongText("THE BODY KEY FEELS HEAVY.", DialogLayout.Bottom)
+        game.showLongText("THE B0DY KEY FEELS HEAVY.", DialogLayout.Bottom)
         game.setDialogTextColor(2)
-        game.showLongText("THE BODY KEY FEELS HEAVY.", DialogLayout.Bottom)
+        game.showLongText("THE B0DY KEY FEELS HEAVY.", DialogLayout.Bottom)
         game.over(false, effects.melt)
     } else {
         game.showLongText("THAT D0ESN'T MAKE SENSE.", DialogLayout.Bottom)
@@ -2104,8 +2106,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     disk.destroy()
     diskCollected = true
     game.showLongText("It's a music disc. ", DialogLayout.Bottom)
-    game.showLongText("It looks like", DialogLayout.Bottom)
-    game.showLongText("it's been through a war..?", DialogLayout.Bottom)
+    game.showLongText("Someone really loved this, once. ", DialogLayout.Bottom)
     game.showLongText("It's probably too scratched to play. ", DialogLayout.Bottom)
 })
 function tommyDisk () {
@@ -3610,6 +3611,20 @@ game.onUpdate(function () {
             animation.setAction(pandora, ActionKind.invsIdleRight)
         }
         mindWandering()
+    }
+})
+game.onUpdateInterval(5000, function () {
+    if (canSpawn == true) {
+        if (Math.percentChance(1)) {
+            game.setDialogTextColor(2)
+            game.showLongText("DID Y0U SEE THAT? ", DialogLayout.Bottom)
+            game.setDialogTextColor(15)
+        }
+        if (Math.percentChance(1)) {
+            game.setDialogTextColor(2)
+            game.showLongText("DID Y0U HEAR THAT? ", DialogLayout.Bottom)
+            game.setDialogTextColor(15)
+        }
     }
 })
 /**
