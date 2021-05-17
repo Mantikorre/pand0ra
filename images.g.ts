@@ -490,6 +490,17 @@ ddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeecc
 .....eeeeeeeeeeeeeeeeeeeeeeeceecccccccccee......
 .....eeeeeeeeeeeeeeeeeeeeecceeeeeeeeeeeeee......
 `;
+            case ";}xr]W#e1u:g]zsxYr^K":
+            case "cat":return img`
+. . f f f f . . 
+. f f f f f f . 
+f f 7 7 7 7 f f 
+f 7 7 f f 7 7 f 
+f 7 7 f f 7 7 f 
+f f 7 7 7 7 f f 
+. f f f f f f . 
+. . f f f f . . 
+`;
         }
         return null;
     })

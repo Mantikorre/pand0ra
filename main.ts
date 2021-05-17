@@ -25,6 +25,7 @@ namespace SpriteKind {
     export const bird = SpriteKind.create()
     export const soulKeu = SpriteKind.create()
     export const vase = SpriteKind.create()
+    export const secondDisk = SpriteKind.create()
 }
 /**
  * mind/body/soul fears as game progresses
@@ -34,8 +35,6 @@ namespace SpriteKind {
  * "y
  * 
  * ou are afr aid."
- */
-/**
  */
 function setLevel () {
     levelOn()
@@ -94,28 +93,28 @@ function setLevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(mindKey, assets.tile`myTile1`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile1`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value2 of tiles.getTilesByType(assets.tile`myTile1`)) {
+        tiles.setTileAt(value2, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(bench, assets.tile`myTile2`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value3 of tiles.getTilesByType(assets.tile`myTile2`)) {
+        tiles.setTileAt(value3, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(body, assets.tile`myTile7`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile7`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value4 of tiles.getTilesByType(assets.tile`myTile7`)) {
+        tiles.setTileAt(value4, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(cardinal, assets.tile`myTile10`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile10`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value5 of tiles.getTilesByType(assets.tile`myTile10`)) {
+        tiles.setTileAt(value5, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(soulKey, assets.tile`myTile11`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile11`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value6 of tiles.getTilesByType(assets.tile`myTile11`)) {
+        tiles.setTileAt(value6, assets.tile`transparency16`)
     }
     tiles.placeOnRandomTile(vault, assets.tile`myTile13`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile13`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value7 of tiles.getTilesByType(assets.tile`myTile13`)) {
+        tiles.setTileAt(value7, assets.tile`transparency16`)
     }
 }
 function levelOn () {
@@ -505,8 +504,10 @@ function levelOn () {
         setFear()
         upsideDown = true
         inverseAnimations()
+        tommyDisk()
     } else {
         vault = sprites.create(assets.image`VASE`, SpriteKind.vase)
+        catDisk.destroy()
         scene.setBackgroundImage(img`
             1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
             1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -647,11 +648,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`STAR2`, function (sprite, loc
     pandora.destroy(effects.disintegrate, 500)
     game.over(false, effects.melt)
 })
-/**
- * maybe make this a loop. OR don't give them a second option.
- * 
- * when u enter a :correct" option it still loops one more time?
- */
+// maybe make this a loop. OR don't give them a second option.
+// 
+// when u enter a :correct" option it still loops one more time?
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenSouth, function (sprite, location) {
     game.showLongText("You found a door.", DialogLayout.Bottom)
     game.showLongText("It would be easier to just lay here and pass the time.", DialogLayout.Bottom)
@@ -699,6 +698,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSpri
     game.showLongText("DON'T WORRY, I WON'T TELL.", DialogLayout.Bottom)
     game.showLongText("I'M NOT EVEN REAL.", DialogLayout.Bottom)
     bench.destroy(effects.disintegrate, 500)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.secondDisk, function (sprite, otherSprite) {
+    catDisk.destroy()
+    diskCollected = true
+    game.showLongText("It's another music disc.", DialogLayout.Bottom)
+    game.showLongText("Somehow, you realize you aren't", DialogLayout.Bottom)
+    game.showLongText("the first to die for it. ", DialogLayout.Bottom)
 })
 function inverseAnimations () {
     invsIdle = animation.createAnimation(ActionKind.invsIdle, 200)
@@ -2110,7 +2116,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     game.showLongText("It's probably too scratched to play. ", DialogLayout.Bottom)
 })
 function tommyDisk () {
-    for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
+    for (let value8 of tiles.getTilesByType(assets.tile`myTile3`)) {
         disk = sprites.create(assets.image`TommyDisc`, SpriteKind.Food)
         animation.runImageAnimation(
         disk,
@@ -2119,7 +2125,72 @@ function tommyDisk () {
         true
         )
         tiles.placeOnRandomTile(disk, assets.tile`myTile3`)
-        tiles.setTileAt(value, assets.tile`transparency16`)
+        tiles.setTileAt(value8, assets.tile`transparency16`)
+    }
+    for (let value9 of tiles.getTilesByType(assets.tile`myTile17`)) {
+        catDisk = sprites.create(assets.image`cat`, SpriteKind.secondDisk)
+        animation.runImageAnimation(
+        catDisk,
+        [img`
+            . . f f f f . . 
+            . f f f f f f . 
+            f f 7 7 7 7 f f 
+            f 7 7 f f 7 7 f 
+            f 7 7 f f 7 7 f 
+            f f 7 7 7 7 f f 
+            . f f f f f f . 
+            . . f f f f . . 
+            `,img`
+            . . f f f . . . 
+            . f f f f f . . 
+            f f 7 7 7 f f . 
+            f 7 7 f 7 7 f . 
+            f 7 7 f 7 7 f . 
+            f f 7 7 7 f f . 
+            . f f f f f . . 
+            . . f f f . . . 
+            `,img`
+            . . . f f . . . 
+            . . f f f f . . 
+            . f 7 7 7 f f . 
+            . f 7 f 7 7 f . 
+            . f 7 f 7 7 f . 
+            . f 7 7 7 f f . 
+            . . f f f f . . 
+            . . . f f . . . 
+            `,img`
+            . . . f f . . . 
+            . . f f f f . . 
+            . . f f f f . . 
+            . . f f f f . . 
+            . . f f f f . . 
+            . . f f f f . . 
+            . . f f f f . . 
+            . . . f f . . . 
+            `,img`
+            . . . f f . . . 
+            . . f f f f . . 
+            . f f 7 7 7 f . 
+            . f 7 7 f 7 f . 
+            . f 7 7 f 7 f . 
+            . f f 7 7 7 f . 
+            . . f f f f . . 
+            . . . f f . . . 
+            `,img`
+            . . . f f f . . 
+            . . f f f f f . 
+            . f f 7 7 7 7 f 
+            . f f 7 f f 7 f 
+            . f f 7 f f 7 f 
+            . f f 7 7 7 7 f 
+            . . f f f f f . 
+            . . . f f f . . 
+            `],
+        150,
+        true
+        )
+        tiles.placeOnRandomTile(catDisk, assets.tile`myTile17`)
+        tiles.setTileAt(value9, assets.tile`transparency16`)
     }
 }
 function animations () {
@@ -3459,7 +3530,6 @@ let left: animation.Animation = null
 let right: animation.Animation = null
 let idleRight: animation.Animation = null
 let idling: animation.Animation = null
-let diskCollected = false
 let secAnswer = ""
 let wanderedFar = false
 let wasRight = false
@@ -3472,8 +3542,10 @@ let invsLeft: animation.Animation = null
 let invsRight: animation.Animation = null
 let invsIdleRight: animation.Animation = null
 let invsIdle: animation.Animation = null
+let diskCollected = false
 let answer = ""
 let disk: Sprite = null
+let catDisk: Sprite = null
 let upsideDown = false
 let hands: Sprite = null
 let vault: Sprite = null
@@ -3620,16 +3692,14 @@ game.onUpdateInterval(5000, function () {
             game.showLongText("DID Y0U SEE THAT? ", DialogLayout.Bottom)
             game.setDialogTextColor(15)
         }
-        if (Math.percentChance(1)) {
+        if (Math.percentChance(0.75)) {
             game.setDialogTextColor(2)
             game.showLongText("DID Y0U HEAR THAT? ", DialogLayout.Bottom)
             game.setDialogTextColor(15)
         }
     }
 })
-/**
- * not sure if i like spawning rate just yet
- */
+// not sure if i like spawning rate just yet
 game.onUpdateInterval(8000, function () {
     if (Math.percentChance(45) && canSpawn == true) {
         hands = sprites.create(assets.image`Hand`, SpriteKind.Enemy)
